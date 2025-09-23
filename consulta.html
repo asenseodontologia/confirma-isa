@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmação de Agendamento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #CDBBA3;
+      display: flex;
+      justify-content: center;      
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #F8ECDE;;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;  
+      width: 320px;
+    }
+    h2 {
+      color: #BF8C6F;
+    }
+    p {
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .whatsapp {
+      background-color: #25D366;
+    }
+    .agenda {
+      background-color: #4285F4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="agendamentoCard">
+  <h2>Agendamento não encontrado</h2>
+  <p id="paciente"></p>
+  <p id="data"></p>
+  <p id="hora"></p>
+  <button class="whatsapp" id="btnWhats">Confirmar pelo WhatsApp</button>
+  <button class="agenda" id="btnAgenda">Adicionar ao Google Agenda</button>
+</div>
+
+<script>
+  // Coloque aqui o WhatsApp da sua clínica
+  const clinicaWhats = "+5519992547868"; // <--- seu número
+
+  // Pegando o ID da URL
+  const params = new URLSearchParams(window.location.search);
+  let id = params.get("id");
+
+  // Fallback para teste
+  if (!id) {
+    id = "123"; // id de teste
+  }
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // ONDE A ISA MECHE:
+  const agendamentos = {
+    "123": { paciente: "Luana Lucia", data: "11/09/2025", hora: "15:00" },       //lua
+    "2": { paciente: "Edmilson", data: "17/09/2025", hora: "13:45" },            //lua
+    "19983136004": { paciente: "José", data: "23/09/2025", hora: "09h45"},       //lua
+    "19996249782": { paciente: "Maria", data: "23/09/2025", hora: "10h45"},      //lua
+    "19997126510": { paciente: "Carine", data: "23/09/2025", hora: "12h45"},     //lua
+    "12997631732": { paciente: "Mirany", data: "23/09/2025", hora: "16h45"},     //lua
+    "19998892597": { paciente: "Luana", data: "23/09/2025", hora: "11h45"},      //lua
+    "19993523935": { paciente: "Teresa", data: "23/09/2025", hora: "14h00"},     //Isa
+    "19996447911": { paciente: "Camila", data: "23/09/2025", hora: "16h30"},     //Isa
+    "19998053205": { paciente: "Juscelino", data: "24/09/2025", hora: "08h45"},  //lua
+    "19982341497": { paciente: "Milena", data: "24/09/2025", hora: "12h45"},     //lua
+    "19971503559": { paciente: "Angela", data: "24/09/2025", hora: "14h45"},     //lua  
+    "19995216539": { paciente: "Marlene", data: "24/09/2025", hora: "08h00"},    //Isa
+    "19989900226": { paciente: "Eligineth", data: "24/09/2025", hora: "09h00"},  //Isa
+    "19988152700": { paciente: "Sueli", data: "24/09/2025", hora: "10h00"},      //Isa
+    "19992994583": { paciente: "Geraldo", data: "24/09/2025", hora: "11h00"},    //Isa
+    "19994590374": { paciente: "Carlos", data: "24/09/2025", hora: "14h00"},     //Isa
+    "19974110214": { paciente: "Flavia", data: "24/09/2025", hora: "13h00"},     //Isa
+    "19997306343": { paciente: "Francinne", data: "24/09/2025", hora: "15h30"},  //Isa
+    "19974106284": { paciente: "Maria", data: "24/09/2025", hora: "16h00"},      //Isa
+    "19992883691": { paciente: "Celia", data: "24/09/2025", hora: "17h00"},      //Isa
+  
+  
+     //meche ate dentro dessas chaves {};
+     //link para o paciente é sempre assim: https://asenseodontologia.github.io/confirma-o/comprovacao.html?id= colocar o numero de telefone aqui
+     //O ISA NÃO ESQUECE DA VÍRGULA KAKAKAK
+     
+
+  
+      };
+  //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  const agendamento = agendamentos[id];
+
+  const card = document.getElementById("agendamentoCard");
+  const pacienteEl = document.getElementById("paciente");
+  const dataEl = document.getElementById("data");
+  const horaEl = document.getElementById("hora");
+  const btnWhats = document.getElementById("btnWhats");
+  const btnAgenda = document.getElementById("btnAgenda");
+
+  if (agendamento) {
+    card.querySelector("h2").textContent = "Confirmação de Agendamento";
+    pacienteEl.textContent = "Paciente: " + agendamento.paciente;
+    dataEl.textContent = "Data: " + agendamento.data;
+    horaEl.textContent = "Hora: " + agendamento.hora;
+
+    // WhatsApp
+    btnWhats.onclick = () => {
+      const mensagem = `Olá, boa tarde, eu ${agendamento.paciente}, confirmo meu agendamento para o dia ${agendamento.data} às ${agendamento.hora}.`;
+      window.open(`https://wa.me/${clinicaWhats}?text=${encodeURIComponent(mensagem)}`, "_blank");
+    };
+
+    // Google Agenda
+    btnAgenda.onclick = () => {
+      const dataSplit = agendamento.data.split("/");
+      const horaSplit = agendamento.hora.split(":");
+      const start = new Date(dataSplit[2], dataSplit[1]-1, dataSplit[0], horaSplit[0], horaSplit[1]);
+      const end = new Date(start.getTime() + 30*60*1000); // 30 minutos de duração
+      const formatDate = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g,"");
+      const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=Consulta Dentista - ${agendamento.paciente}&dates=${formatDate(start)}/${formatDate(end)}&details=Agendamento confirmado&sf=true&output=xml`;
+      window.open(url, "_blank");
+    };
+  }
+</script>
+
+</body>
+</html>
