@@ -4,50 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Confirmação de Agendamento</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #CDBBA3;
-      display: flex;
-      justify-content: center;      
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .card {
-      background: #F8ECDE;;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;  
-      width: 320px;
-    }
-    h2 {
-      color: #BF8C6F;
-    }
-    p {
-      margin: 10px 0;
-    }
-    button {
-      padding: 10px 20px;
-      margin: 10px 5px;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    .whatsapp {
-      background-color: #25D366;
-    }
-    .agenda {
-      background-color: #4285F4;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="card" id="agendamentoCard">
+  <!-- Logo -->
+  <img src="logo.png" alt="Logo da Clínica Odontológica" class="logo">
+
   <h2>Agendamento não encontrado</h2>
   <p id="paciente"></p>
   <p id="data"></p>
@@ -128,18 +92,16 @@
     dataEl.textContent = "Data: " + agendamento.data;
     horaEl.textContent = "Hora: " + agendamento.hora;
 
-    // WhatsApp
     btnWhats.onclick = () => {
       const mensagem = `Olá, boa tarde, eu ${agendamento.paciente}, confirmo meu agendamento para o dia ${agendamento.data} às ${agendamento.hora}.`;
       window.open(`https://wa.me/${clinicaWhats}?text=${encodeURIComponent(mensagem)}`, "_blank");
     };
 
-    // Google Agenda
     btnAgenda.onclick = () => {
       const dataSplit = agendamento.data.split("/");
       const horaSplit = agendamento.hora.split(":");
       const start = new Date(dataSplit[2], dataSplit[1]-1, dataSplit[0], horaSplit[0], horaSplit[1]);
-      const end = new Date(start.getTime() + 30*60*1000); // 30 minutos de duração
+      const end = new Date(start.getTime() + 15*60*1000); 
       const formatDate = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g,"");
       const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=Consulta Dentista - ${agendamento.paciente}&dates=${formatDate(start)}/${formatDate(end)}&details=Agendamento confirmado&sf=true&output=xml`;
       window.open(url, "_blank");
@@ -148,8 +110,8 @@
 </script>
 
 </body>
-
 </html>
+
 
 
 
