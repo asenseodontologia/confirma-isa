@@ -101,7 +101,7 @@
       const dataSplit = agendamento.data.split("/");
       const horaSplit = agendamento.hora.split(":");
       const start = new Date(dataSplit[2], dataSplit[1]-1, dataSplit[0], horaSplit[0], horaSplit[1]);
-      const end = new Date(start.getTime() + 15*60*1000); 
+      const end = new Date(start.getTime() + 30*60*1000); 
       const formatDate = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g,"");
       const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=Consulta Dentista - ${agendamento.paciente}&dates=${formatDate(start)}/${formatDate(end)}&details=Agendamento confirmado&sf=true&output=xml`;
       window.open(url, "_blank");
@@ -111,6 +111,7 @@
 
 </body>
 </html>
+
 
 
 
